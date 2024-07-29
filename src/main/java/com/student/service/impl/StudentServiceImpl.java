@@ -10,8 +10,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.student.entity.Student;
 import com.student.payloads.AddressDto;
+import com.student.payloads.CourseDto;
 import com.student.payloads.StudentDto;
 import com.student.repository.StudentRepository;
+import com.student.service.CourseClient;
 import com.student.service.StudentService;
 
 @Service
@@ -38,6 +40,10 @@ public class StudentServiceImpl implements StudentService {
 	@Autowired
 	private WebClient webClient;
 
+//	for feign client
+	@Autowired
+	private CourseClient courseClient;
+
 	@Override
 	public StudentDto createStudent(Student student) {
 		Student studentObj = this.studentRepo.save(student);
@@ -49,14 +55,17 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public StudentDto getStudentByID(int id) {
 
-		StudentDto studnetObj = this.modelMapper.map(this.studentRepo.findById(id), StudentDto.class);
+		StudentDto studentObj = this.modelMapper.map(this.studentRepo.findById(id), StudentDto.class);
 //		Set data by making a rest APi call
 //		AddressDto addressDto = this.restTemplate.getForObject("/get-address/{id}", AddressDto.class, id);
 		AddressDto addressDto = webClient.get().uri("/get-address/" + id).retrieve().bodyToMono(AddressDto.class)
 				.block();
+		CourseDto courseDto = courseClient.getCourseByStudentId(id);
 
-		studnetObj.setAddressDto(addressDto);
-		return studnetObj;
+		studentObj.setAddressDto(addressDto);
+		studentObj.setCourseDto(courseDto);
+
+		return studentObj;
 	}
 
 //	private AddressDto callingAddressServiceUsingRESTTemplate(int id) {
