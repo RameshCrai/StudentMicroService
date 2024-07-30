@@ -19,16 +19,17 @@ public class AppConfig {
 //		return new RestTemplate();
 //	}
 	
-	@Value("${addressservice.base.url}")
-	private String addressBaseURL;
-	
-	@Bean
-	public WebClient webClient() {
-		return WebClient
-				.builder()
-				.baseUrl(addressBaseURL)
-				.build();
-				
-	}
+//	don't use this kind of hard code 
+//	@Value("${addressservice.base.url}")
+//	private String addressBaseURL;
+//	
+//	@Bean
+//	public WebClient webClient() {
+//		return WebClient
+//				.builder()
+//				.baseUrl(addressBaseURL)
+//				.build();
+//				
+//	}
 
 }

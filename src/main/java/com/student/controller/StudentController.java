@@ -23,7 +23,7 @@ public class StudentController {
 	private StudentServiceImpl serviceimpl;
 
 	@PostMapping("/create-student")
-	public ResponseEntity<?> saveStudent(@RequestBody Student student) throws ApiExceptionHandler {
+	public ResponseEntity<?> saveStudent(@RequestBody StudentDto student) throws ApiExceptionHandler {
 		try {
 			StudentDto studentObj = this.serviceimpl.createStudent(student);
 			return ResponseEntity.status(HttpStatus.OK).body(studentObj);
